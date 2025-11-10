@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import validator from "validator";
 
 const userModel = new mongoose.Schema({
   email: {
@@ -11,7 +10,7 @@ const userModel = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Please enter a password"],
-    minLength: [6, "Password requirement is six(6) characters"],
+    minlength: 6,
   },
 });
 
