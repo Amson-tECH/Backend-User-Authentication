@@ -1,30 +1,10 @@
 import user from "../model/userModel.js";
 import validator from "validator";
 
-// get all users
-const getUsers = async (req, res) => {
-  try {
-    const allUsers = await user.find({});
-    res.json({ allUsers });
-  } catch (error) {
-    console.error(error);
-  }
-};
 
-// get a single user
-const singleUser = async (req, res) => {
-  try {
-    const { userId } = req.body;
-    const User = await user.findById(userId);
-    res.json({ success: true, User });
-  } catch (error) {
-    console.error(error);
-    res.json({ success: false, message: "Cannot find usser" });
-  }
-};
 
 // register a user
-const createUser = async (req, res) => {
+const signUp = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -77,4 +57,4 @@ const createUser = async (req, res) => {
   }
 };
 
-export { getUsers, createUser, singleUser };
+export { signUp };
