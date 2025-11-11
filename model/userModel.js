@@ -21,6 +21,7 @@ userModel.pre("save", async function (next) {
   next();
 });
 
+
 const user = new mongoose.model("User", userModel);
 
 export default user;

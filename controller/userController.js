@@ -1,7 +1,9 @@
 import user from "../model/userModel.js";
 import validator from "validator";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
+// token creation function
 const maxAge = 3 * 24 * 60 * 60;
 const createToke = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -44,7 +46,7 @@ const signUp = async (req, res) => {
     //  Create user
     const newUser = await user.create({ email, password });
 
-    //jwt
+    //create token --- token to cookie
     const token = createToke(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
 
@@ -65,4 +67,26 @@ const signUp = async (req, res) => {
   }
 };
 
-export { signUp };
+// login user
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const userf = await user.findOne({ email });
+    if (!userf) {
+      res.status(401).json({ success: false, message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(password, userf.password);
+    if (isMatch) {
+      const token = createToke(user._id);
+      res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+      res.json({ success: true, message: "User is LogIn successfully" });
+    } else {
+      res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+  } catch (error) {
+    res.status(401).json({ message: error.message });
+  }
+};
+
+export { signUp, loginUser };
