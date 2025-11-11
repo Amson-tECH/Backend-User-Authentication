@@ -183,7 +183,7 @@ This project is licensed under the MIT License.
 ## 👨‍💻 Author
 
 **Reuben Korsi Amuzu**
-- GitHub: [@yourusername](https://github.com/Amson-tECH)
+- GitHub: [@Amson-tECH](https://github.com/Amson-tECH)
 - Email: reubenamuzu23@gmail.com
 
 
