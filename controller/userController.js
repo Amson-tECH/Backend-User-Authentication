@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 // token creation function
-const maxAge = 3 * 24 * 60 * 60;
+const maxAge = 3 * 24 * 60 * 60; // three days
 const createToke = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: maxAge,
@@ -71,6 +71,12 @@ const signUp = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    //Check for missing fields
+    if (!email || !password) {
+      res.status(400).json({ message: "Email and password are required" });
+    }
+
     const userf = await user.findOne({ email });
     if (!userf) {
       res.status(401).json({ success: false, message: "User not found" });
@@ -82,7 +88,7 @@ const loginUser = async (req, res) => {
       res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
       res.json({ success: true, message: "User is LogIn successfully" });
     } else {
-      res.status(401).json({ success: false, message: "Invalid credentials" });
+      res.status(401).json({ success: false, message: "Invalid password" });
     }
   } catch (error) {
     res.status(401).json({ message: error.message });
