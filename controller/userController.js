@@ -1,7 +1,13 @@
 import user from "../model/userModel.js";
 import validator from "validator";
+import jwt from "jsonwebtoken";
 
-
+const maxAge = 3 * 24 * 60 * 60;
+const createToke = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: maxAge,
+  });
+};
 
 // register a user
 const signUp = async (req, res) => {
@@ -38,18 +44,20 @@ const signUp = async (req, res) => {
     //  Create user
     const newUser = await user.create({ email, password });
 
-    return res.status(201).json({
+    //jwt
+    const token = createToke(user._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+
+    res.status(201).json({
       message: "User created successfully",
       user: {
         id: newUser._id,
-        email: newUser.email,
-        password: newUser.password,
       },
     });
   } catch (error) {
     console.error("Error creating user:", error.message);
 
-    // 6️⃣ Fallback for unexpected errors
+    // Fallback for unexpected errors
     return res.status(500).json({
       message: "Internal server error",
       error: error.message,
