@@ -8,7 +8,7 @@ export const authUser = (req, res, next) => {
     if (!token) {
       return res
         .status(401)
-        .json({ success: false, message: "Access denied. Please log in." });
+        .json({ success: false, message: "Access denied. Please log in." })
     }
 
     //  Verify token

@@ -95,4 +95,10 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { signUp, loginUser };
+//logout user 
+const logout = async (req, res) => {
+  res.cookie("jwt", "", {maxAge: 1})
+  res.redirect("/")
+}
+
+export { signUp, loginUser , logout};
