@@ -4,7 +4,7 @@ export const authUser = (req, res, next) => {
   try {
     const token = req.cookies?.jwt;
 
-    // Check if token exists
+    // Check if token exists 
     if (!token) {
       return res
         .status(401)

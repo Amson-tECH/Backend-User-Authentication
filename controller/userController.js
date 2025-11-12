@@ -79,7 +79,9 @@ const loginUser = async (req, res) => {
 
     const userf = await user.findOne({ email });
     if (!userf) {
-      res.status(401).json({ success: false, message: "User not found" });
+      res
+        .status(401)
+        .json({ success: false, message: "User not found creat an account" });
     }
 
     const isMatch = await bcrypt.compare(password, userf.password);
@@ -88,17 +90,22 @@ const loginUser = async (req, res) => {
       res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
       res.json({ success: true, message: "User is LogIn successfully" });
     } else {
-      res.status(401).json({ success: false, message: "Invalid password" });
+      res
+        .status(401)
+        .json({
+          success: false,
+          message: "Invalid password, enter correct password",
+        });
     }
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
 };
 
-//logout user 
+//logout user
 const logout = async (req, res) => {
-  res.cookie("jwt", "", {maxAge: 1})
-  res.redirect("/")
-}
+  res.cookie("jwt", "", { maxAge: 1 });
+  res.redirect("/");
+};
 
-export { signUp, loginUser , logout};
+export { signUp, loginUser, logout };
